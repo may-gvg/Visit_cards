@@ -1,8 +1,5 @@
 
 
-# Napisz funkcję, która tworzy instancje Twojej klasy reprezentującej wizytówkę. Używając biblioteki faker, którą opisaliśmy powyżej.
-# Zapewnij losowość danych w każdej wizytówce, którą zwróci Twoja funkcja.
-
 from faker import Faker
 fake = Faker()
 
@@ -31,6 +28,7 @@ class visit_card:
 
     #W klasie przechowującej wizytówkę zdefiniuj dynamiczny atrybut (używając @property), który będzie zwracał sumę długości
 
+    # Oba typy wizytówek powinny mieć dynamiczny atrybut label_length, który zwraca długość imienia i nazwiska danej osoby.
 
     @property
     def name_size(self):
@@ -109,12 +107,16 @@ for i in lista4:
    # Oba typy wizytówek powinny mieć dynamiczny atrybut label_length, który zwraca długość imienia i nazwiska danej osoby.
     #Stwórz funkcję create_contacts, która będzie potrafiła komponować losowe wizytówki. Niech ta funkcja przyjmuje dwa parametry: rodzaj wizytówki oraz ilość. Wykorzystaj bibliotekę faker do generowania danych.
 
-class BaseContact():
+class BaseContact:
     def __str__(self):
-        return f'{self.imie} {self.nazwisko} {self.e_mail}'
+        return f"{self.imie} {self.nazwisko} {self.e_mail}"
 
     def contact(self):
         print("Wybieram numer " + self.telefon + " i dzwonię do " + self.imie + ", " + self.nazwisko)
+
+    @property
+    def label_length(self):
+        return(len(self.imie + " " + self.nazwisko))
 
     def __init__(self, imie, nazwisko, e_mail, telefon):
         self.imie = imie
@@ -136,5 +138,25 @@ class BusinessContact(BaseContact):
     def contact(self):
         print("Wybieram numer " + self.telefon2 + " i dzwonię do " + self.imie + ", " + self.nazwisko)
 
-x = BusinessContact(imie="Majkel", nazwisko="Maejkson", e_mail="pulajla@v.pl", telefon="123456", stanowisko="ninja", nazwa_firmy="gate", telefon2="999 888 777")
+x = BusinessContact(imie="Majkel", nazwisko="Maejkson", e_mail="pulajla@v.pl", telefon="1234567890", stanowisko="ninja", nazwa_firmy="gate", telefon2="9876543210")
 print (x.contact())
+
+# Napisz funkcję, która tworzy instancje Twojej klasy reprezentującej wizytówkę. Używając biblioteki faker, którą opisaliśmy powyżej.
+# Zapewnij losowość danych w każdej wizytówce, którą zwróci Twoja funkcja.
+
+
+def generuj_wizytowki(rodzaj="BaseContact", ilosc=1):
+    wizytowki = []
+    if rodzaj == "BaseContact":
+        for i in range(0, ilosc):
+            kontakt  = BaseContact(imie=fake.name(), nazwisko=(""), telefon=fake.phone_number(),  e_mail=fake.email())
+            wizytowki.append(kontakt)
+    if rodzaj == "BusinessContact":
+        for i in range(0, ilosc):
+            kontakt  = BusinessContact(imie=fake.name(), nazwisko=(""), telefon=fake.phone_number(),  e_mail=fake.email(), stanowisko=fake.job(), nazwa_firmy=fake.company(), telefon2=fake.phone_number())
+            wizytowki.append(kontakt)
+    return wizytowki
+
+wizytowki = generuj_wizytowki("BusinessContact", 10)
+for i in wizytowki:
+    print(i)
