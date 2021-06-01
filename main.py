@@ -108,6 +108,12 @@ for i in lista4:
     #Stwórz funkcję create_contacts, która będzie potrafiła komponować losowe wizytówki. Niech ta funkcja przyjmuje dwa parametry: rodzaj wizytówki oraz ilość. Wykorzystaj bibliotekę faker do generowania danych.
 
 class BaseContact:
+    def __init__(self, imie, nazwisko, e_mail, telefon):
+        self.imie = imie
+        self.nazwisko = nazwisko
+        self.e_mail = e_mail
+        self.telefon = telefon
+
     def __str__(self):
         return f"{self.imie} {self.nazwisko} {self.e_mail}"
 
@@ -118,11 +124,6 @@ class BaseContact:
     def label_length(self):
         return(len(self.imie + " " + self.nazwisko))
 
-    def __init__(self, imie, nazwisko, e_mail, telefon):
-        self.imie = imie
-        self.nazwisko = nazwisko
-        self.e_mail = e_mail
-        self.telefon = telefon
 
 x = BaseContact(imie="Majkel", nazwisko="mekson", e_mail="at@o6.pl", telefon="1234")
 print (x)
@@ -145,18 +146,18 @@ print (x.contact())
 # Zapewnij losowość danych w każdej wizytówce, którą zwróci Twoja funkcja.
 
 
-def generuj_wizytowki(rodzaj="BaseContact", ilosc=1):
+def generuj_wizytowki(rodzaj=BaseContact, ilosc=1):
     wizytowki = []
-    if rodzaj == "BaseContact":
+    if rodzaj == BaseContact:
         for i in range(0, ilosc):
             kontakt  = BaseContact(imie=fake.name(), nazwisko=(""), telefon=fake.phone_number(),  e_mail=fake.email())
             wizytowki.append(kontakt)
-    if rodzaj == "BusinessContact":
+    if rodzaj == BusinessContact:
         for i in range(0, ilosc):
             kontakt  = BusinessContact(imie=fake.name(), nazwisko=(""), telefon=fake.phone_number(),  e_mail=fake.email(), stanowisko=fake.job(), nazwa_firmy=fake.company(), telefon2=fake.phone_number())
             wizytowki.append(kontakt)
     return wizytowki
 
-wizytowki = generuj_wizytowki("BusinessContact", 10)
+wizytowki = generuj_wizytowki(BusinessContact, 10)
 for i in wizytowki:
     print(i)
